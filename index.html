@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title style="color:brown;">Page Title</title>
+<link rel="icon" href="favicon.ico" type="image/x-icon">
+ <meta charset="UTF-8">
+</head>
+
+<body bgcolor="#588489">
+<center>
+<p id="status">Enable javascript!</p>
+<script>
+   document.getElementById('status').innerHTML = 'Please log ' + 'in...';
+</script>
+<script>
+ function statusChangeCallback(response) {
+    if (response.status === 'connected') {
+      getDp(response.authResponse.userID);
+    } else if (response.status === 'not_authorized') {
+      document.getElementById('status').innerHTML = 'Please log ' + 'in...';
+    } else {
+      document.getElementById('status').innerHTML = 'Please log ' + 'in...';
+    }
+  }
+  
+  function checkLoginState() {
+    FB.getLoginStatus(function(response) {
+      statusChangeCallback(response);
+    });
+  }
+
+  window.fbAsyncInit = function() {
+  FB.init({
+    appId      : 'App ID',
+    cookie     : true,  
+    xfbml      : true,  
+    version    : 'v2.5'
+  });
+
+  function getFBData() {
+        FB.api('/me', function (data) {
+        })
+   }
+
+ 
+  FB.getLoginStatus(function(response) {
+    statusChangeCallback(response);
+  });
+
+  };
+
+
+  (function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "//connect.facebook.net/en_US/sdk.js";
+    fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));
+
+ 
+
+	function getDp(id){
+                document.getElementById('btn').innerHTML = '';
+		document.getElementById('status').innerHTML = 'Please wait......';
+		imageWidth = "500";
+		imageHeight = "500";
+		canvasHeight = "500";
+		canvasWidth = "500";
+		imageSrc = "https://graph.facebook.com/"+id+"/picture?width=600&height=600";
+		filterSource = "Filter Image Path";
+		setFacebookFilter(imageWidth,imageHeight,canvasWidth,canvasHeight,filterSource,imageSrc);
+
+	}
+function setFacebookFilter(imgwidth,imgHeight,canvasWidth,canvasHeight,fltrSrc,imgSrc){
+    
+    document.getElementById('status').innerHTML = 'Please wait......';
+    var canvasElement = document.getElementById("myCanvas");
+    canvasElement.style.display='block';
+    canvasElement.width = canvasWidth;
+    canvasElement.height = canvasHeight;
+    var ctx = canvasElement.getContext("2d");
+    var image = new Image();
+    var filter = new Image();
+    image.setAttribute('crossOrigin', 'anonymous');
+    filter.setAttribute('crossOrigin', 'anonymous');
+    image.width = imgwidth;
+    image.height = imgHeight;
+    filter.src = fltrSrc;
+    filter.onload=function(){
+        image.src = imgSrc;
+        image.onload = function() {
+            ctx.drawImage(image, 0, 0, image.width, image.height);
+            ctx.drawImage(filter, 0, 0, image.width, image.height);
+        }
+    }
+    document.getElementById('status').innerHTML = 'Please wait......';
+
+    document.getElementById('status').innerHTML = '<h4 style="color:#3B3131"> Click on the Image to Download when it appears !  </h4> ';
+}
+function exportCanvasAsPNG() {
+
+    var canvasElement = document.getElementById("myCanvas");
+
+    var MIME_TYPE = "image/png";
+
+    var imgURL = canvasElement.toDataURL(MIME_TYPE);
+
+    var dlLink = document.createElement('a');
+    dlLink.download = 'Facebook_Filter.png';
+    dlLink.href = imgURL;
+    dlLink.dataset.downloadurl = [MIME_TYPE, dlLink.download, dlLink.href].join(':');
+    document.body.appendChild(dlLink);
+    dlLink.click();
+    document.body.removeChild(dlLink);
+}
+</script>
+<div id='btn'>
+  <fb:login-button scope="public_profile" onlogin="checkLoginState();"></fb:login-button>
+  <br/><br/><br/>
+</div>
+<div id='canv'>
+ 
+   <canvas id="myCanvas" onclick="exportCanvasAsPNG()" style="display:none">
+      Your browser does not support the HTML5 canvas tag. Please update your browser.
+   </canvas>
+</div>
+</center>
+</body>
+</html>
+									
