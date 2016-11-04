@@ -63,29 +63,25 @@
 	function getDp(id){
                 document.getElementById('btn').innerHTML = '';
 		document.getElementById('status').innerHTML = 'Please wait......';
-		imageWidth = "500";
-		imageHeight = "500";
-		canvasHeight = "500";
-		canvasWidth = "500";
 		imageSrc = "https://graph.facebook.com/"+id+"/picture?width=600&height=600";
 		filterSource = "Filter Image Path";
-		setFacebookFilter(imageWidth,imageHeight,canvasWidth,canvasHeight,filterSource,imageSrc);
+		setFacebookFilter(filterSource,imageSrc);
 
 	}
-function setFacebookFilter(imgwidth,imgHeight,canvasWidth,canvasHeight,fltrSrc,imgSrc){
+function setFacebookFilter(fltrSrc,imgSrc){
     
     document.getElementById('status').innerHTML = 'Please wait......';
     var canvasElement = document.getElementById("myCanvas");
     canvasElement.style.display='block';
-    canvasElement.width = canvasWidth;
-    canvasElement.height = canvasHeight;
+    canvasElement.width = 500;
+    canvasElement.height = 500;
     var ctx = canvasElement.getContext("2d");
     var image = new Image();
     var filter = new Image();
     image.setAttribute('crossOrigin', 'anonymous');
     filter.setAttribute('crossOrigin', 'anonymous');
-    image.width = imgwidth;
-    image.height = imgHeight;
+    image.width = 500;
+    image.height = 500;
     filter.src = fltrSrc;
     filter.onload=function(){
         image.src = imgSrc;
